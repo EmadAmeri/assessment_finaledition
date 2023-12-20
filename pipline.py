@@ -6,10 +6,13 @@ from snowflake.connector.pandas_tools import write_pandas
 file_input = "~/assessment_finaledition/spotify_songs.csv"
 df = pd.read_csv(file_input)
 
+#Transform
 # cleaning missing values
 df["track_name"].fillna("Unknown_track", inplace=True)
 df["track_artist"].fillna("Unknown_artist", inplace=True)
 df["track_album_name"].fillna("Unknown_album", inplace=True)
+
+
 # Extract only the first 4 characters of the 'track_album_release_date' string
 #df['track_album_release_date'] = df['track_album_release_date'].astype(str).str[:4]
 df['track_album_release_date'] = df['track_album_release_date'].apply(lambda x: str(x)[:4])
@@ -21,7 +24,7 @@ df['track_album_release_date'] = df['track_album_release_date'].apply(lambda x: 
 
 df = df.assign(duration_min=(df['duration_ms'] / (1000 * 60)).astype('int64')).drop('duration_ms', axis=1)
 
-
+#Load
 # Snowflake account credentials and connection details
 user = "EMADAM"
 password = "Emad646261."
@@ -39,7 +42,7 @@ conn = snowflake.connector.connect(
 )
 
 # Write the data from the DataFrame to Snowflake
-write_pandas(conn, df, "spotify_2", auto_create_table=True)
+write_pandas(conn, df, "spotify_4", auto_create_table=True)
 
 # Close the connection
 conn.close()
