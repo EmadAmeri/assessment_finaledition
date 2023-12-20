@@ -15,9 +15,12 @@ df["track_album_name"].fillna("Unknown_album", inplace=True)
 df['track_album_release_date'] = df['track_album_release_date'].apply(lambda x: str(x)[:4])
 
 # Convert 'duration_ms' to minutes and cast to int64
-df['duration_min'] = (df['duration_ms'] / (1000 * 60)).astype('int64')
+#df['duration_min'] = (df['duration_ms'] / (1000 * 60)).astype('int64')
 # Drop the original 'duration_ms' column
-df.drop('duration_ms', axis=1, inplace=True)
+#df.drop('duration_ms', axis=1, inplace=True)
+
+df = df.assign(duration_min=(df['duration_ms'] / (1000 * 60)).astype('int64')).drop('duration_ms', axis=1)
+
 
 # Snowflake account credentials and connection details
 user = "EMADAM"
